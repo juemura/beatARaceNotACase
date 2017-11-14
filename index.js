@@ -1,6 +1,6 @@
 var mainState = {
     preload: function() {
-        this.game.load.image('player', 'assets/player.PNG');
+//        this.game.load.image('player', 'assets/player.PNG');
         this.game.load.image('wall', 'assets/wall.PNG');
         this.game.load.image('coin', 'assets/coin.PNG');
         this.game.load.image('enemy', 'assets/lava.PNG');
