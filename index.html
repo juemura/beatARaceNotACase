@@ -1,6 +1,6 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
-    <head>
+	<head>
         <script src="phaser.min.js"></script>
         <script src="src/boot.js"></script>
 		<script src="src/preload.js"></script>
@@ -12,7 +12,7 @@
     		</style>
 		<script>
 			(function() {
-				var game = new Phaser.Game(320, 480, Phaser.CANVAS, "game");
+				var game = new Phaser.Game(2000, 575, Phaser.CANVAS, "game");
 				game.state.add("Boot",boot);
 				game.state.add("Preload",preload);
 				game.state.add("GameTitle",gameTitle);
@@ -22,12 +22,6 @@
 			})();    
 		</script>
     </head>
-    <body> 
-<!--
-        <h1>BeatARace-Not-ACase</h1>
-        
-        <img src="https://i.ytimg.com/vi/Cw6JiWOxwAE/hqdefault.jpg" alt="Race Car" width="500" height="377">
-            
--->
+    <body>
     </body>
 </html>
