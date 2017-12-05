@@ -1,78 +1,137 @@
 var mainState = {
     preload: function() {
-//        this.game.load.image('player', 'assets/player.PNG');
-        this.game.load.image('wall', 'assets/wall.PNG');
-        this.game.load.image('coin', 'assets/coin.PNG');
-        this.game.load.image('enemy', 'assets/lava.PNG');
+        this.game.load.image('player', 'assets/New Piskel (2).png');
+        this.game.load.image('finishLine', 'assets/finishLine.png');
+        this.game.load.image('gasoline', 'assets/gasoline2.PNG');
+        this.game.load.image('enemy', 'assets/New P.png');
     },
     
     create: function() {
-        this.game.stage.backgroundColor = '#3598db';
+        this.game.stage.backgroundColor = '#00008b';
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         game.world.enableBody = true;
         
         this.cursor = this.game.input.keyboard.createCursorKeys();
         
-        this.player = this.game.add.sprite(70, 100, 'player');
+        this.player = this.game.add.sprite(90, 225, 'player');
         
-        this.player.body.gravity.y = 600;
+//        game.physics.enable(this.player, Phaser.Physics.ARCADE);
+//        this.player.body.allowRotation = true;
+//        this.player.body.immovable = true;
+//        this.player.body.collideWorlWall = true;
+       this.player.anchor.set(0.5);
         
-        this.walls = this.game.add.group();
-        this.coins = this.game.add.group();
+        this.player.body.gravity.y = 0;
+        
+        this.finishLines = this.game.add.group() ;
+//        this.walls.enableBody = true;
+        this.gasolines = this.game.add.group();
         this.enemies = this.game.add.group();
         
         var level = [
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-            '!         !                               x',
-            '!                 o        o         o    x',
-            '!         o                     !         x',
-            '!                    x                    x',
-            '!     o   !    x     x        o      o    x',
-            'xxxxxxxxxxxxxxxx!!!!!xxxxxxxxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+            'x                                                                        x',
+            'x                                                                        x',
+            'xxx     xxxxxxxxxxxxxxxxxxxxx     x                                      x',
+            'x       x o                       x     x    xxxxxxxxxxxxxxxxxx          x',
+            'x       x                         x     x    x                x          x',
+            'x     xxx     x       xxxxxxxxxxxxx     x    x  o             x          x',
+            'x       x     x                   x     x    x                x          x',
+            'xxx     x     x                   x     x    xxxxxxxxxxx                 x',
+            'x       x     xxxxx               x     x              x                 x',
+            'x     xxx     x                         x              xx                x',
+            'xxxxxxxxx     x       xxxxxx            x              xxxx      xxxxxxxxx', 
+            'x                                      xxxxxxxxx          x              x',
+            'x                                      x                  x              x',
+            'xxx     xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                  x              x',
+            'x       x                                      xxxxxxxxxxxxxxxxxxx       x',
+            'x       x                                      x                 x       x',
+            'x     xxx                                      x o               x       x',
+            'x       x       xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                 x       x',
+            'x       x                            x         xxxxx       x     x       x', 
+            'xxx     x                            x             x       x     x   o   x',
+            'x       x                            x      x      x       x     x       x',
+            'x     xxxxxxxxxxxxxxxxxxxxxxxxx      x      x      x       x     xxxxxxxxx',          
+            'x                             x             x      x       x             x',
+            'x                         o   x             x              x             !',
+            'x                             x             x              x             !',               
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+            
+            
+            
         ];
-        
         for (var i = 0; i < level.length; i++) {
             for (var j = 0; j < level[i].length; j++) {
 
-                if (level[i][j] == 'x') {
-                    var wall = game.add.sprite(30+20*j, 30+20*i, 'wall');
-                    this.walls.add(wall);
-                    wall.body.immovable = true; 
+                if (level[i][j] == '!') {
+                    var finishLine = game.add.sprite(30+20*j, 30+20*i, 'finishLine');
+                    this.finishLines.add(finishLine);
+//                    var wall = this.walls.create(30+20*j, 30+20*i, 'wall');
+                    finishLine.body.immovable = true; 
                 }
 
                 else if (level[i][j] == 'o') {
-                    var coin = game.add.sprite(30+20*j, 30+20*i, 'coin');
-                    this.coins.add(coin);
+                    var gasoline = game.add.sprite(30+20*j, 30+20*i, 'gasoline');
+                    this.gasolines.add(gasoline);
                 }
 
-                else if (level[i][j] == '!') {
+                else if (level[i][j] == 'x') {
                     var enemy = game.add.sprite(30+20*j, 30+20*i, 'enemy');
                     this.enemies.add(enemy);
                 }
             }
         }
     },
-    
     update: function() {
-        this.game.physics.arcade.collide(this.player, this.walls);
+        this.game.physics.arcade.overlap(this.player, this.finishLines, this.win, null, this);
 
-        this.game.physics.arcade.overlap(this.player, this.coins, this.takeCoin, null, this);
+        this.game.physics.arcade.overlap(this.player, this.gasolines, this.takeGasoline, null, this);
 
         this.game.physics.arcade.overlap(this.player, this.enemies, this.restart, null, this);
         
-        if(this.cursor.left.isDown)
-            this.player.body.velocity.x = -200;
+        this.player.body.velocity.x = 0;
+        this.player.body.velocity.y = 0;
+        this.player.body.angularVelocity = 0;
+
+        if (this.cursor.left.isDown)
+        {
+            this.player.body.angularVelocity = -250;
+        }
         else if (this.cursor.right.isDown)
-            this.player.body.velocity.x = 200;
-        else
-            this.player.body.velocity.x = 0;
+        {
+            this.player.body.angularVelocity = 250;
+        }
+
+        if (this.cursor.up.isDown)
+        {
+            this.game.physics.arcade.velocityFromAngle(this.player.angle, 250, this.player.body.velocity);
+        }
+
+    
         
-        if(this.cursor.up.isDown && this.player.body.touching.down)
-            this.player.body.velocity.y = -250;
     },
     
-    takeCoin: function(player, coin){
-        coin.kill();
+//    update: function() {
+//        this.game.physics.arcade.collide(this.player, this.walls);
+//
+//        this.game.physics.arcade.overlap(this.player, this.gasoline, this.takeGasoline, null, this);
+//
+//        this.game.physics.arcade.overlap(this.player, this.enemies, this.restart, null, this);
+//        
+////        this.player.body.angularVelocity = 20;
+//        
+//        if(this.cursor.left.isDown)
+//            this.player.body.velocity.x = -90;
+//        else if (this.cursor.right.isDown)
+//            this.player.body.velocity.x = 90;
+//        if(this.cursor.up.isDown)
+//            this.player.body.velocity.y = -90;
+//        else if (this.cursor.down.isDown)
+//            this.player.body.velocity.y = 90;
+//        
+//},
+    takeGasoline: function(player, gasoline){
+        gasoline.kill();
     },
 
     restart: function() {
