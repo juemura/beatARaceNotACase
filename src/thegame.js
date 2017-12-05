@@ -4,7 +4,7 @@ theGame.prototype = {
   	    create: function() {
         this.game.stage.backgroundColor = '#00008b';
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
-        game.world.enableBody = true;
+        this.game.world.enableBody = true;
         
         this.cursor = this.game.input.keyboard.createCursorKeys();
         
@@ -59,19 +59,19 @@ theGame.prototype = {
             for (var j = 0; j < level[i].length; j++) {
 
                 if (level[i][j] == '!') {
-                    var finishLine = game.add.sprite(30+20*j, 30+20*i, 'finishLine');
+                    var finishLine = this.game.add.sprite(30+20*j, 30+20*i, 'finishLine');
                     this.finishLines.add(finishLine);
 //                    var wall = this.walls.create(30+20*j, 30+20*i, 'wall');
                     finishLine.body.immovable = true; 
                 }
 
                 else if (level[i][j] == 'o') {
-                    var gasoline = game.add.sprite(30+20*j, 30+20*i, 'gasoline');
+                    var gasoline = this.game.add.sprite(30+20*j, 30+20*i, 'gasoline');
                     this.gasolines.add(gasoline);
                 }
 
                 else if (level[i][j] == 'x') {
-                    var enemy = game.add.sprite(30+20*j, 30+20*i, 'enemy');
+                    var enemy = this.game.add.sprite(30+20*j, 30+20*i, 'enemy');
                     this.enemies.add(enemy);
                 }
             }
@@ -128,8 +128,12 @@ theGame.prototype = {
     takeGasoline: function(player, gasoline){
         gasoline.kill();
     },
+    
+    win: function() {
+          this.game.state.start('gameOver');
+    },
 
     restart: function() {
-        game.state.start('main');
+        this.game.state.start('main');
     },
 }
