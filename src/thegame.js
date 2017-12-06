@@ -34,7 +34,7 @@ theGame.prototype = {
             'x       x     x                   x     x    x                x          x',
             'xxx     x     x                   x     x    xxxxxxxxxxx                 x',
             'x       x     xxxxx               x     x              x                 x',
-            'x     xxx     x                         x              xx                x',
+            'x       x     x                         x              xx                x',
             'xxxxxxxxx     x       xxxxxx            x              xxxx      xxxxxxxxx', 
             'x                                      xxxxxxxxx          x              x',
             'x                                      x                  x              x',
@@ -78,6 +78,7 @@ theGame.prototype = {
         }
     },
     update: function() {
+//        this.game.physics.arcade.collide(this.player, this.enemies);
         this.game.physics.arcade.overlap(this.player, this.finishLines, this.win, null, this);
 
         this.game.physics.arcade.overlap(this.player, this.gasolines, this.takeGasoline, null, this);
@@ -106,34 +107,15 @@ theGame.prototype = {
         
     },
     
-//    update: function() {
-//        this.game.physics.arcade.collide(this.player, this.walls);
-//
-//        this.game.physics.arcade.overlap(this.player, this.gasoline, this.takeGasoline, null, this);
-//
-//        this.game.physics.arcade.overlap(this.player, this.enemies, this.restart, null, this);
-//        
-////        this.player.body.angularVelocity = 20;
-//        
-//        if(this.cursor.left.isDown)
-//            this.player.body.velocity.x = -90;
-//        else if (this.cursor.right.isDown)
-//            this.player.body.velocity.x = 90;
-//        if(this.cursor.up.isDown)
-//            this.player.body.velocity.y = -90;
-//        else if (this.cursor.down.isDown)
-//            this.player.body.velocity.y = 90;
-//        
-//},
     takeGasoline: function(player, gasoline){
         gasoline.kill();
     },
     
     win: function() {
-          this.game.state.start('gameOver');
+          this.game.state.start('GameOver');
     },
 
     restart: function() {
-        this.game.state.start('main');
+        this.game.state.start('GameOver');
     },
 }
