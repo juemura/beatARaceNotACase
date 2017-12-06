@@ -112,7 +112,7 @@ theGame.prototype = {
     },
     
     win: function() {
-          this.game.state.start('GameOver');
+          this.game.state.start('YouWin');
     },
 
     restart: function() {
